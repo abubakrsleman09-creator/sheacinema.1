@@ -1,0 +1,127 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "favorites": { "type": "array", "items": { "type": "string" } },
+        "watchHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "movieId": { "type": "string" },
+              "watchedAt": { "type": "string", "format": "date-time" },
+              "progress": { "type": "number" }
+            }
+          }
+        },
+        "notifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "title": { "type": "string" },
+              "message": { "type": "string" },
+              "read": { "type": "boolean" },
+              "createdAt": { "type": "string", "format": "date-time" }
+            }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Movie": {
+      "title": "Movie",
+      "description": "Information about a movie or series",
+      "type": "object",
+      "properties": {
+        "titleKu": { "type": "string" },
+        "titleEn": { "type": "string" },
+        "description": { "type": "string" },
+        "posterUrl": { "type": "string" },
+        "bannerUrl": { "type": "string" },
+        "videoQuality": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          }
+        },
+        "subtitles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": { "type": "string" },
+              "lang": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          }
+        },
+        "category": { "type": "string", "enum": ["Action", "Drama", "Kurdish", "Comedy", "Horror", "Documentary"] },
+        "rating": { "type": "number" },
+        "year": { "type": "integer" },
+        "duration": { "type": "string" },
+        "isDrama": { "type": "boolean" },
+        "cast": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "role": { "type": "string" },
+              "imageUrl": { "type": "string" }
+            }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["titleKu", "posterUrl"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "movies/{movieId}": {
+      "schema": "Movie",
+      "description": "Collection of movies and dramas"
+    },
+    "admins/{adminId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "addedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "description": "Collection of admin users"
+    },
+    "movies/{movieId}/reviews/{reviewId}": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "userId": { "type": "string" },
+          "userName": { "type": "string" },
+          "userPhoto": { "type": "string" },
+          "rating": { "type": "number" },
+          "comment": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "description": "Reviews for a specific movie"
+    }
+  }
+}
